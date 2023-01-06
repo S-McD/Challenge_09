@@ -55,12 +55,18 @@ Also design the interface of each class in more detail.
 class Diary
   def initialize
     # empty array for entries
+    # empty array for todos
+    # empty array for contacts
   end
 
   def add(entry) # entry is an instance of Diary_Entry
     # Entry gets added to the diary
+    # Contacts are passed to contact list
     # Returns nothing
   end
+
+  def add_chore(todo) #entry is an instance of ToDo
+    #entry gets added to todo list
 
   def view_all
     # Returns a list of entry objects
@@ -71,7 +77,7 @@ class Diary
   end
 
   def view_todo
-   # returns a list of all tasks on the todo list what are not completed
+    # returns a list of all tasks on the todo list what are not completed
   end
 
   def view_contacts
@@ -96,14 +102,20 @@ class DiaryEntry
 end
 
 class ToDo
-    def initialize
-    #...
+    def initialize(task) # task is a string
+    # sets done to false ss status
     end
-    def add_task(chore)
-    # Adds a chore to a list
+
+    def task
+    # returns task
     end
-    def mark_complete
-    # marks a todo as complete
+
+    def mark_done!
+    # marks a todo as done
+    end
+
+    def done?
+    # checks if task is done and returns answer
     end
 end
 
@@ -126,26 +138,71 @@ diary.view_all => [entry_1, entry_2]
 
 # 3 - selects content by reading time available
 diary = Diary.new
-entry_1 = DiaryEntry.new("1/1", "Today I woke up")
-entry_2 = DiaryEntry.new("2/1", "I was very sleepy today")
+entry_1 = DiaryEntry.new("1/1", "Today I woke up", "Mum - 07903112233")
+entry_2 = DiaryEntry.new("2/1", "I was very sleepy today, back to bed", "Dad - 07944112233")
+entry_3 = DiaryEntry.new("3/1", "Today is the third day of the year", "Simone - 07903112233")
 diary.add(entry_1)
 diary.add(entry_2)
-diary.select_by_reading_time(2, 2) => "Today I woke up"
+diary.add(entry_3)
+diary.select_by_reading_time(2, 2) => entry_1
 
-# 4 - shows all tasks in a list
+# 4 - shows all incomplete tasks in a list
 diary = Diary.new
-todo = ToDo.new
+entry_1 = DiaryEntry.new("1/1", "Today I woke up", "Mum - 07903112233")
+todo = Todo.new("buy milk")
+diary.add(entry_1)
+diary.add_chore(todo)
+diary.view_todo) => [todo]
 
+# 5 - returns a list of contacts
+diary = Diary.new
+entry_1 = DiaryEntry.new("1/1", "Today I woke up", "Mum - 07903112233")
+entry_2 = DiaryEntry.new("2/1", "I was very sleepy today, back to bed", "Dad - 07944112233")
+entry_3 = DiaryEntry.new("3/1", "Today is the third day of the year", "Simone - 07903112233")
+diary.add(entry_1)
+diary.add(entry_2)
+diary.add(entry_3)
+diary.view_contacts => ["Mum - 07903112233", "Dad - 07944112233", "Simone - 07903112233"]
 
 4. Create Examples as Unit Tests
 Create examples, where appropriate, of the behaviour of each relevant class at a more granular level of detail.
 
-# EXAMPLE
+TODO unit tests
+# 1 - initailises with a task
+todo = ToDo.new("buy milk")
+todo => todo
 
-# Constructs a track
-track = Track.new("Carte Blanche", "Veracocha")
-track.title # => "Carte Blanche"
-Encode each example as a test. You can add to the above list as you go.
+# 2 - returns the task when asked
+todo = ToDo.new("buy milk")
+todo.task => "buy milk"
+
+# 3 - marks the task as done
+todo = Todo.new("Buy milk")
+todo.mark_done! => true
+
+# 4 - checks if a task is done
+todo = Todo.new("Buy milk")
+todo_2 = Todo.new("Buy bread")
+todo.mark_done!
+todo.done? => true
+todo_2.done? => false
+
+DIARY ENTRY unit tests
+# 1 - it in initalises
+diary_entry = DiaryEntry.new("1/1", "Hello", "Mum - 07904433112")
+diary_entry => diary_entry
+
+# 2 - returns output for each method called
+diary_entry = DiaryEntry.new("1/1", "Today is the first of the year", "Simone - 07903112233")
+diary_entry.title => "1/1"
+diary_entry.contents => "Today is the first of the year"
+diary_entry.contact => "Simone - 07903112233"
+diary_entry.count_words => 7
+
+DIARY unit tests
+# 1 - has an empty list of entries
+diary = Diary.new
+diary.view_all => []
 
 5. Implement the Behaviour
 After each test you write, follow the test-driving process of red, green, refactor to implement the behaviour.
